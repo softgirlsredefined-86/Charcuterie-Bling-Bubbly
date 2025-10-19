@@ -3,197 +3,205 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Charcuterie, Bling & Bubbly | Bling & Mingle Entertainment</title>
+  <title>Charcuterie, Bling & Bubbly Social | Bling & Mingle Entertainment</title>
   <style>
-    @keyframes fadeInUp {
-      from {opacity: 0; transform: translateY(30px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #fce4ec, #e3f2fd);
-      color: #444;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #fbe4eb, #d8ecf8);
       overflow-x: hidden;
+      color: #444;
+      animation: fadeIn 1.5s ease-in;
     }
-    .sparkles {
+
+    /* Sparkle overlay */
+    .sparkle-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px);
+      background-size: 3px 3px;
+      animation: sparkleMove 15s linear infinite;
+      z-index: 1;
+    }
+    @keyframes sparkleMove {
+      from { background-position: 0 0; }
+      to { background-position: 1000px 1000px; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Loader */
+    #loader {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      pointer-events: none;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px);
-      background-size: 3px 3px;
-      animation: sparkle 10s linear infinite;
-      z-index: 1;
-    }
-    @keyframes sparkle {
-      from {background-position: 0 0;}
-      to {background-position: 100% 100%;}
-    }
-    header, section, footer {
-      position: relative;
-      z-index: 2;
-      animation: fadeInUp 1.2s ease forwards;
-    }
-    header {
-      text-align: center;
-      padding: 60px 20px 20px;
-    }
-    header h1 {
-      font-size: 2.5em;
-      color: #c2185b;
-      margin-bottom: 5px;
-    }
-    header h2 {
-      color: #1976d2;
-      font-weight: 400;
-      margin-top: 0;
-    }
-    .event-info {
-      text-align: center;
-      background: rgba(255,255,255,0.8);
-      margin: 30px auto;
-      padding: 20px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 700px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-    form {
+      background: rgba(255, 240, 245, 0.95);
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      background: rgba(255,255,255,0.8);
-      padding: 20px;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 10000;
+      font-size: 1.4rem;
+      color: #b35ea2;
+      animation: fadeIn 1s ease-in;
+    }
+    #loader h1 {
+      font-weight: 600;
+      margin: 0;
+    }
+    #loader p {
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+      color: #7d5b7c;
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    /* Content wrapper */
+    main {
+      position: relative;
+      z-index: 2;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #b35ea2;
+      animation: slideUp 1.5s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .btn {
+      display: inline-block;
+      background: #b35ea2;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      margin: 0.5rem;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+      background: #d27dc1;
+    }
+
+    form {
+      background: rgba(255,255,255,0.85);
       border-radius: 20px;
-      width: 90%;
-      max-width: 700px;
-      margin: 30px auto;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin: 2rem auto;
+      max-width: 600px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: left;
     }
     input, textarea {
-      padding: 10px;
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.6rem;
+      border: 1px solid #ddd;
       border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 1em;
     }
-    button {
-      background: linear-gradient(45deg, #f8bbd0, #bbdefb);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 1em;
-    }
-    button:hover {
-      transform: scale(1.05);
-      background: linear-gradient(45deg, #f48fb1, #90caf9);
-    }
-    .calendar-share {
+    label { font-weight: 600; color: #7d5b7c; }
+
+    footer {
       text-align: center;
-      margin: 40px auto;
+      padding: 1.5rem;
+      color: #7d5b7c;
+      font-size: 0.9rem;
     }
-    .calendar-share a {
-      margin: 0 10px;
-      text-decoration: none;
-      color: #c2185b;
-      font-weight: 500;
-    }
+
     #backToTop {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: #c2185b;
+      background: #b35ea2;
       color: #fff;
       border: none;
       border-radius: 50%;
       width: 45px;
       height: 45px;
+      font-size: 1.5rem;
       cursor: pointer;
-      font-size: 1.5em;
       display: none;
-      z-index: 10;
+      z-index: 999;
     }
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: rgba(255,255,255,0.8);
-      margin-top: 50px;
-      border-radius: 20px 20px 0 0;
-    }
-    audio {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      z-index: 10;
-      opacity: 0.7;
+    #backToTop:hover {
+      background: #d27dc1;
     }
   </style>
 </head>
 <body>
-  <div class="sparkles"></div>
-  <header>
-    <h1>Charcuterie, Bling & Bubbly</h1>
-    <h2>Sip. Sparkle. Savor.</h2>
-    <p><em>Because every bottle — and board — deserves a little bling!</em></p>
-  </header>
-
-  <section class="event-info">
-    <h3>Event Details</h3>
-    <p><strong>Date:</strong> Saturday, December 6, 2025</p>
-    <p><strong>Time:</strong> 4:00 PM – 7:00 PM</p>
-    <p><strong>Location:</strong> Downtown Jacksonville area (exact location provided upon RSVP)</p>
-    <p>Enjoy a sparkling evening of creativity, conversation, and charcuterie! All supplies, hors d’oeuvres, and drinks are provided. 18+ only. $25 entry fee. RSVP required.</p>
-  </section>
-
-  <form action="https://formspree.io/f/xanpkjoy" method="POST">
-    <h3>RSVP Form</h3>
-    <input type="text" name="name" placeholder="Your Full Name" required>
-    <input type="email" name="email" placeholder="Your Email Address" required>
-    <input type="text" name="guest" placeholder="Guest Name (optional)">
-    <label><input type="checkbox" name="age" required> I confirm I am 18 or older.</label>
-    <label><input type="checkbox" name="rsvp_later"> RSVP Now, Pay Later (payment due within 2 weeks)</label>
-    <button type="submit">Submit RSVP</button>
-    <a href="https://softgirlsredefined.ticketspice.com/charcuterie-bling-bubbly" target="_blank">
-      <button type="button">Pay Now</button>
-    </a>
-  </form>
-
-  <div class="calendar-share">
-    <h3>Add to Calendar</h3>
-    <a href="#">Google</a> |
-    <a href="#">Outlook</a> |
-    <a href="#">Apple</a>
-    <h3 style="margin-top:20px;">Share This Event</h3>
-    <a href="https://www.facebook.com/sharer/sharer.php?u=https://softgirlsredefined.ticketspice.com/charcuterie-bling-bubbly" target="_blank">Facebook</a> |
-    <a href="https://www.instagram.com/" target="_blank">Instagram</a> |
-    <a href="mailto:?subject=Join me for Charcuterie, Bling & Bubbly!&body=Check out this event: https://softgirlsredefined.ticketspice.com/charcuterie-bling-bubbly">Email</a> |
-    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);alert('Link copied!');">Copy Link</a>
+  <div id="loader">
+    <h1>Bling & Mingle Entertainment Presents:</h1>
+    <p>"Charcuterie, Bling & Bubbly Social"</p>
   </div>
 
-  <form action="https://formspree.io/f/xanpkjoy" method="POST">
-    <h3>We’d Love Your Feedback!</h3>
-    <input type="text" name="feedback_name" placeholder="Your Name" required>
-    <input type="email" name="feedback_email" placeholder="Your Email" required>
-    <textarea name="feedback_message" rows="4" placeholder="Share your thoughts about the event..."></textarea>
-    <button type="submit">Submit Feedback</button>
-  </form>
+  <div class="sparkle-overlay"></div>
 
-  <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  <main>
+    <h1>Charcuterie, Bling & Bubbly Social</h1>
+    <p><strong>Date:</strong> Saturday, December 6, 2025<br>
+       <strong>Time:</strong> 4:00 PM – 7:00 PM<br>
+       <strong>Location:</strong> Downtown Jacksonville area (location provided upon RSVP)</p>
 
-  <footer>
-    <p>© 2025 Bling & Mingle Entertainment. All rights reserved.</p>
-  </footer>
+    <a href="https://softgirlsredefined.ticketspice.com/charcuterie-bling-bubbly" class="btn">Pay Now</a>
 
-  <audio id="bg-music" src="sax_jazz_loop.mp3" autoplay loop controls></audio>
+    <form action="https://formspree.io/f/xanpkjoy" method="POST">
+      <h2>RSVP Form</h2>
+      <label>Name:</label>
+      <input type="text" name="name" required>
+      <label>Email:</label>
+      <input type="email" name="email" required>
+      <label>Phone:</label>
+      <input type="text" name="phone">
+      <label>
+        <input type="checkbox" name="rsvp_later"> RSVP Now, Pay Later (2 weeks to pay)
+      </label>
+      <button type="submit" class="btn">Submit RSVP</button>
+    </form>
+
+    <form action="https://formspree.io/f/xanpkjoy" method="POST">
+      <h2>Feedback</h2>
+      <label>Your Experience:</label>
+      <textarea name="feedback" rows="4" placeholder="We’d love your thoughts!"></textarea>
+      <button type="submit" class="btn">Send Feedback</button>
+    </form>
+
+    <footer>© 2025 Bling & Mingle Entertainment | Designed with 💖</footer>
+  </main>
+
+  <button id="backToTop">↑</button>
+
+  <audio id="bg-music" src="sax_jazz_loop.mp3" autoplay loop controls style="position:fixed; bottom:10px; left:10px; z-index:999;"></audio>
 
   <script>
-    const backToTop = document.getElementById('backToTop');
-    window.addEventListener('scroll', () => {
-      backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
+    const loader = document.getElementById('loader');
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        loader.style.animation = 'fadeOut 1s forwards';
+      }, 2000);
     });
+
+    const btn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      btn.style.display = window.scrollY > 200 ? 'block' : 'none';
+    });
+    btn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
   </script>
 </body>
 </html>
