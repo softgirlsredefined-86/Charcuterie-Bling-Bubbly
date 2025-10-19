@@ -62,12 +62,15 @@
 <div id="loader">✨ Sip. Sparkle. Savor. ✨</div>
 
 <!-- Audio player -->
-<div class="audio-control">
-  🎷 Soft Jazz
-  <audio id="bgAudio" controls autoplay loop muted>
-    <source src="soft-jazz.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+<!-- 🎷 Music Button -->
+<button id="musicBtn" class="music-control" title="Toggle Music">🎷</button>
+
+<!-- 🎶 Background Music (starts muted for autoplay compliance) -->
+<audio id="bgMusic" autoplay muted loop>
+  <source src="soft-jazz.mp3" type="audio/mpeg">
+</audio>
+
+
 </div>
 
 <header>
@@ -196,6 +199,46 @@ document.getElementById('shareFB').addEventListener('click', () => {
 document.getElementById('shareIG').addEventListener('click', () => {
   window.open(`https://www.instagram.com/?url=${encodeURIComponent(pageUrl)}`, '_blank');
 });
+  <script>
+/* 🎵 Smooth Fade Music Control */
+const bgMusic = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicBtn');
+let isPlaying = true;
+let fadeInterval;
+
+function fadeVolume(target, step = 0.05, interval = 100) {
+  clearInterval(fadeInterval);
+  fadeInterval = setInterval(() => {
+    if (target > bgMusic.volume) {
+      bgMusic.volume = Math.min(bgMusic.volume + step, target);
+      if (bgMusic.volume >= target) clearInterval(fadeInterval);
+    } else {
+      bgMusic.volume = Math.max(bgMusic.volume - step, target);
+      if (bgMusic.volume <= target) clearInterval(fadeInterval);
+    }
+  }, interval);
+}
+
+musicBtn.addEventListener('click', () => {
+  bgMusic.muted = false; // unmute on first click
+  if (isPlaying) {
+    fadeVolume(0); // fade out
+    setTimeout(() => bgMusic.pause(), 800);
+    musicBtn.textContent = '🔇';
+  } else {
+    bgMusic.play();
+    bgMusic.volume = 0; // start silent
+    fadeVolume(1); // fade in
+    musicBtn.textContent = '🎷';
+  }
+  isPlaying = !isPlaying;
+});
+
+/* Enable play after any page click (browser autoplay fix) */
+document.addEventListener('click', () => {
+  bgMusic.play().catch(() => {});
+}, { once: true });
 </script>
+
 </body>
 </html>
