@@ -82,6 +82,14 @@
 <body>
   <div id="loader">✨ Sip. Sparkle. Savor. ✨</div>
   <div class="sparkle-layer" aria-hidden="true"></div>
+<!-- 🎷 Music Control -->
+<button id="musicBtn" class="music-control" title="Toggle Music">🎷</button>
+
+<!-- 🎶 Background Music (autoplays with smooth fade) -->
+<audio id="bgMusic" autoplay muted loop>
+  <source src="soft-jazz.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
   <!-- 🎷 Music Button + Audio -->
   <button id="musicBtn" class="music-control" title="Toggle Music">🎷</button>
@@ -200,5 +208,58 @@ musicBtn.onclick=()=>{
 };
 document.addEventListener('click',()=>{bgMusic.play().catch(()=>{});bgMusic.muted=false;},{once:true});
 </script>
+  <script>
+window.addEventListener('load', () => {
+  const bgMusic = document.getElementById('bgMusic');
+  const musicBtn = document.getElementById('musicBtn');
+  let isPlaying = true;
+  let fadeInterval;
+
+  // Smooth fade in/out helper
+  function fadeVolume(target, step = 0.05, interval = 100) {
+    clearInterval(fadeInterval);
+    fadeInterval = setInterval(() => {
+      if (target > bgMusic.volume) {
+        bgMusic.volume = Math.min(bgMusic.volume + step, target);
+        if (bgMusic.volume >= target) clearInterval(fadeInterval);
+      } else {
+        bgMusic.volume = Math.max(bgMusic.volume - step, target);
+        if (bgMusic.volume <= target) clearInterval(fadeInterval);
+      }
+    }, interval);
+  }
+
+  // Attempt autoplay on page load
+  bgMusic.play().then(() => {
+    bgMusic.muted = false;
+    bgMusic.volume = 0;
+    fadeVolume(1); // fade to full volume
+  }).catch(() => {
+    // If blocked, wait for a user click
+    document.addEventListener('click', () => {
+      bgMusic.play();
+      bgMusic.muted = false;
+      bgMusic.volume = 0;
+      fadeVolume(1);
+    }, { once: true });
+  });
+
+  // Toggle music on button click
+  musicBtn.addEventListener('click', () => {
+    if (isPlaying) {
+      fadeVolume(0);
+      setTimeout(() => bgMusic.pause(), 800);
+      musicBtn.textContent = '🔇';
+    } else {
+      bgMusic.play();
+      bgMusic.volume = 0;
+      fadeVolume(1);
+      musicBtn.textContent = '🎷';
+    }
+    isPlaying = !isPlaying;
+  });
+});
+</script>
+
 </body>
 </html>
