@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Charcuterie, Bling & Bubbly | RSVP</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(rgba(255, 240, 245, 0.95), rgba(240, 248, 255, 0.95)), url('https://www.transparenttextures.com/patterns/gold-scale.png');
+      background-size: cover;
+      background-attachment: fixed;
+      color: #444;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px 10px 20px;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    header img {
+      width: 160px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(255, 192, 203, 0.3);
+    }
+
+    h1 {
+      color: #b76e79;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4em;
+      margin-bottom: 0.2em;
+    }
+
+    h2 {
+      font-weight: 400;
+      font-size: 1.3em;
+      color: #555;
+    }
+
+    .container {
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.9);
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: slideUp 2s ease forwards 0.8s;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: 600;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+      font-size: 1em;
+      font-family: inherit;
+    }
+
+    button {
+      background: linear-gradient(135deg, #ffb6c1, #b0e0e6);
+      border: none;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-size: 1.1em;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 192, 203, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #777;
+      background: rgba(255,255,255,0.5);
+      border-top: 1px solid #eee;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #thankyou {
+      display: none;
+      text-align: center;
+      font-size: 1.2em;
+      color: #b76e79;
+      margin-top: 20px;
+    }
+
+    /* Loading shimmer */
+    #loader {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ffe4e1, #e6f2ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      color: #b76e79;
+      animation: fadeOut 1.5s ease forwards;
+      animation-delay: 2s;
+      z-index: 9999;
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+  </style>
+</head>
+<body>
+  <div id="loader">✨ Sip. Sparkle. Savor. ✨</div>
+
+  <header>
+    <img src="Untitled design.png" alt="Bling & Mingle Entertainment Logo">
+    <h1>Charcuterie, Bling & Bubbly</h1>
+    <h2>Sip. Sparkle. Savor.</h2>
+    <p><strong>December 6th • Downtown Jacksonville</strong></p>
+  </header>
+
+  <div class="container">
+    <form id="rsvpForm" action="https://formspree.io/f/xanpkjoy" method="POST">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="_replyto" required>
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone">
+
+      <label>Are you 18 or older?</label>
+      <select name="age_confirmation" required>
+        <option value="">Select one</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <label>Will you be bringing a guest?</label>
+      <select name="bringing_guest" required>
+        <option value="">Select one</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label for="guestName">If yes, Guest's Name:</label>
+      <input type="text" id="guestName" name="guest_name">
+
+      <label for="allergies">Any food allergies or dietary preferences?</label>
+      <textarea id="allergies" name="allergies"></textarea>
+
+      <label>Payment Confirmation</label>
+      <select name="payment_option" required>
+        <option value="">Select one</option>
+        <option value="RSVP Now, Pay Later">RSVP Now, Pay Later (2 weeks to pay)</option>
+        <option value="Pay Now via TicketSpice">Pay Now via TicketSpice</option>
+      </select>
+
+      <label for="notes">Additional Notes or Requests</label>
+      <textarea id="notes" name="notes"></textarea>
+
+      <button type="submit">Submit RSVP</button>
+      <p style="margin-top:15px;">
+        <a href="https://softgirlsredefined.ticketspice.com/charcuterie-bling-bubbly" target="_blank">
+          <button type="button">Pay Now via TicketSpice</button>
+        </a>
+      </p>
+    </form>
+
+    <div id="thankyou">💖 Thank you for RSVPing! We can’t wait to see you sparkle on December 6th! 💖</div>
+  </div>
+
+  <footer>
+    Designed by Bling & Mingle Entertainment ✨ <br>
+    Contact: Softgirlsredefined@gmail.com
+  </footer>
+
+  <script>
+    const form = document.getElementById('rsvpForm');
+    const thankyou = document.getElementById('thankyou');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (response.ok) {
+        form.reset();
+        form.style.display = 'none';
+        thankyou.style.display = 'block';
+      } else {
+        alert("Oops! Something went wrong, please try again.");
+      }
+    });
+  </script>
+</body>
+</html>
