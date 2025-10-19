@@ -1,207 +1,406 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Charcuterie, Bling & Bubbly Social | Bling & Mingle Entertainment</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #fbe4eb, #d8ecf8);
-      overflow-x: hidden;
-      color: #444;
-      animation: fadeIn 1.5s ease-in;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Charcuterie, Bling & Bubbly Social — Bling & Mingle Entertainment</title>
+<meta name="description" content="Charcuterie, Bling & Bubbly Social — December 6, 2025. Sip. Sparkle. Savor. RSVP now.">
+<style>
+  /* ----------------- Variables & base ----------------- */
+  :root{
+    --blush:#F9E4E8;
+    --light:#FFFFFF;
+    --blue:#B0E0E6;
+    --deep:#b35ea2;
+    --gold:#D4AF37;
+    --muted:#6a6a6a;
+    --card: rgba(255,255,255,0.94);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; -webkit-font-smoothing:antialiased;}
+  body{
+    background: linear-gradient(135deg,var(--blush), #e6f6ff 60%);
+    color:#333; overflow-x:hidden; line-height:1.4;
+  }
 
-    /* Sparkle overlay */
-    .sparkle-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px);
-      background-size: 3px 3px;
-      animation: sparkleMove 15s linear infinite;
-      z-index: 1;
-    }
-    @keyframes sparkleMove {
-      from { background-position: 0 0; }
-      to { background-position: 1000px 1000px; }
-    }
+  /* ----------------- Sparkle overlay (ON TOP) ----------------- */
+  .sparkles {
+    position:fixed; inset:0; z-index:1000; pointer-events:none;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.85) 1px, transparent 1px),
+      radial-gradient(circle, rgba(212,175,55,0.08) 1px, transparent 1px);
+    background-size: 20px 20px, 80px 80px;
+    mix-blend-mode: screen; opacity:0.95;
+    animation: sparkleDrift 14s linear infinite;
+  }
+  .sparkles::after{
+    content:""; position:absolute; inset:-30% -30%;
+    background:
+      radial-gradient(circle, rgba(255,255,255,0.12) 2px, transparent 2px),
+      radial-gradient(circle, rgba(212,175,55,0.06) 2px, transparent 2px);
+    background-size: 160px 160px, 240px 240px;
+    animation: sparkleFloat 26s linear infinite;
+    mix-blend-mode: overlay; opacity:0.7;
+  }
+  @keyframes sparkleDrift { 0%{background-position:0 0,0 0} 100%{background-position:1000px 1000px, -800px -400px} }
+  @keyframes sparkleFloat { 0%{transform:translate(0,0)} 50%{transform:translate(6%,4%)} 100%{transform:translate(0,0)} }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+  /* ----------------- loader (intro) ----------------- */
+  #loader {
+    position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column;
+    background: rgba(250,240,245,0.96); z-index:2000; text-align:center;
+    transition: opacity .6s ease, visibility .6s ease;
+  }
+  #loader h2{ margin:0; font-family:"Playfair Display", serif; color:var(--deep); font-size:1.6rem; letter-spacing:0.6px;}
+  #loader p{margin:8px 0 0;color:var(--muted);font-size:1rem;}
+  /* shimmer across loader title */
+  .shimmer-line{
+    display:inline-block; position:relative; overflow:hidden;
+  }
+  .shimmer-line::after{
+    content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.0) 100%);
+    transform:translateX(-120%); animation: shimmer 2s linear infinite;
+    mix-blend-mode: overlay;
+  }
+  @keyframes shimmer { to{ transform: translateX(120%); } }
 
-    /* Loader */
-    #loader {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(255, 240, 245, 0.95);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      z-index: 10000;
-      font-size: 1.4rem;
-      color: #b35ea2;
-      animation: fadeIn 1s ease-in;
-    }
-    #loader h1 {
-      font-weight: 600;
-      margin: 0;
-    }
-    #loader p {
-      font-size: 1.1rem;
-      margin-top: 0.5rem;
-      color: #7d5b7c;
-    }
-    @keyframes fadeOut {
-      from { opacity: 1; }
-      to { opacity: 0; visibility: hidden; }
-    }
+  /* ----------------- main layout ----------------- */
+  header { text-align:center; padding:40px 16px 6px; position:relative; z-index:2; animation:fadeIn .9s ease forwards 0.6s;}
+  header img{width:170px;border-radius:14px;box-shadow:0 12px 40px rgba(179,94,162,0.12);display:block;margin:0 auto;}
+  h1{font-family:"Playfair Display", serif; color:var(--deep); margin:12px 0 6px; font-size:2rem;}
+  .subline{ color:var(--muted); font-size:1rem; margin-top:6px; }
 
-    /* Content wrapper */
-    main {
-      position: relative;
-      z-index: 2;
-      padding: 2rem;
-      text-align: center;
-    }
+  main.wrapper{ max-width:920px; margin:18px auto; padding:0 18px 48px; z-index:2; position:relative; }
+  .card { background:var(--card); border-radius:18px; padding:26px; box-shadow: 0 10px 40px rgba(32,20,30,0.06); animation: slideUp .9s ease forwards 0.9s; }
 
-    h1 {
-      font-size: 2rem;
-      color: #b35ea2;
-      animation: slideUp 1.5s ease;
-    }
-    @keyframes slideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes slideUp { from{transform:translateY(18px);opacity:0} to{transform:translateY(0);opacity:1} }
 
-    .btn {
-      display: inline-block;
-      background: #b35ea2;
-      color: white;
-      padding: 0.8rem 1.5rem;
-      border-radius: 30px;
-      margin: 0.5rem;
-      text-decoration: none;
-      transition: transform 0.2s ease;
-    }
-    .btn:hover {
-      transform: scale(1.05);
-      background: #d27dc1;
-    }
+  .meta { display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:12px; }
+  .chip { padding:8px 12px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(255,255,255,0.92));font-weight:700;border:1px solid rgba(0,0,0,0.03); }
 
-    form {
-      background: rgba(255,255,255,0.85);
-      border-radius: 20px;
-      padding: 1.5rem;
-      margin: 2rem auto;
-      max-width: 600px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      text-align: left;
-    }
-    input, textarea {
-      width: 100%;
-      margin: 0.5rem 0;
-      padding: 0.6rem;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-    }
-    label { font-weight: 600; color: #7d5b7c; }
+  p.lead { color:#555; text-align:center; margin:8px 0 0; }
 
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      color: #7d5b7c;
-      font-size: 0.9rem;
-    }
+  /* ----------------- buttons ----------------- */
+  .btn {
+    display:inline-flex; gap:10px; align-items:center; justify-content:center;
+    padding:12px 18px;border-radius:28px;font-weight:800;border:none; cursor:pointer;
+    color:#fff; text-decoration:none;
+    background: linear-gradient(90deg, #f8bbd0, #b0e0e6);
+    box-shadow: 0 10px 30px rgba(176,224,230,0.15);
+    transition: transform .25s ease, box-shadow .25s ease, filter .2s;
+  }
+  .btn:hover{ transform: translateY(-3px); box-shadow: 0 18px 40px rgba(212,175,55,0.14); filter:brightness(1.02); }
 
-    #backToTop {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #b35ea2;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      font-size: 1.5rem;
-      cursor: pointer;
-      display: none;
-      z-index: 999;
-    }
-    #backToTop:hover {
-      background: #d27dc1;
-    }
-  </style>
+  .pay {
+    background: linear-gradient(90deg,#f2c2d7, #a8d8eb);
+    border: 1px solid rgba(0,0,0,0.04);
+    color:#2c2c2c;
+    font-weight:900;
+  }
+
+  /* ----------------- forms ----------------- */
+  form.rsvp { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px; }
+  label{ display:block; font-weight:700; margin-bottom:6px; color:#4d4d4d; font-size:.92rem; }
+  input, select, textarea { width:100%; padding:10px; border-radius:10px; border:1px solid rgba(0,0,0,0.08); font-size:0.95rem; background:#fff; }
+  textarea{ min-height:110px; grid-column:1/3; resize:vertical; }
+
+  .full { grid-column:1/3; }
+  .actions { display:flex; gap:12px; align-items:center; grid-column:1/3; flex-wrap:wrap; }
+
+  .note { font-size:.88rem; color:var(--muted); margin-top:6px; }
+
+  /* ----------------- share bar (3D icons) ----------------- */
+  .share { display:flex; gap:12px; justify-content:center; margin-top:18px; }
+  .icon {
+    width:54px; height:54px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center;
+    background: linear-gradient(145deg,#ffffff, #f2f6fb);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.12), inset 0 -4px 10px rgba(0,0,0,0.03);
+    cursor:pointer; transition: transform .22s cubic-bezier(.25,.8,.25,1), box-shadow .2s;
+    position:relative;
+  }
+  .icon:hover{ transform: translateY(-6px) scale(1.03); box-shadow: 0 18px 40px rgba(0,0,0,0.16); }
+  .icon:active{ transform: translateY(-2px); }
+  .icon img{ width:28px; height:28px; pointer-events:none; display:block; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.08)); }
+
+  /* subtle sparkle near icons */
+  .icon::after { content:""; position:absolute; top:-8px; right:-8px; width:12px; height:12px; background: radial-gradient(circle, #fff 0%, #ffd966 45%, transparent 60%); opacity:0.0; transition:opacity .25s; border-radius:50%; }
+  .icon:hover::after{ opacity:1; transform:translateY(-2px); }
+
+  /* ----------------- back to top ----------------- */
+  #backTop{ position:fixed; right:18px; bottom:18px; z-index:1200; width:50px; height:50px; border-radius:50%;
+    border:none; background:linear-gradient(90deg,#f4b1c7,#b0e0e6); color:white; font-weight:800; display:none; box-shadow:0 12px 40px rgba(0,0,0,0.12); cursor:pointer; }
+
+  /* ----------------- responsive ----------------- */
+  @media (max-width:720px){
+    form.rsvp { grid-template-columns:1fr; }
+    .icon { width:48px; height:48px; }
+    header img{ width:140px; }
+  }
+</style>
 </head>
 <body>
-  <div id="loader">
-    <h1>Bling & Mingle Entertainment Presents:</h1>
-    <p>"Charcuterie, Bling & Bubbly Social"</p>
+
+  <!-- Loader intro -->
+  <div id="loader" role="status" aria-label="Loading">
+    <div class="shimmer-line"><h2>Bling & Mingle Entertainment Presents</h2></div>
+    <p style="margin-top:10px;font-size:1.05rem; color:var(--muted)"><strong>“Charcuterie, Bling & Bubbly Social”</strong></p>
   </div>
 
-  <div class="sparkle-overlay"></div>
+  <!-- Sparkle overlay ON TOP -->
+  <div class="sparkles" aria-hidden="true"></div>
 
-  <main>
+  <!-- Page Header -->
+  <header>
+    <!-- If you have a logo file, place Untitled design.png in repo root and uncomment the <img> below -->
+    <!-- <img src="Untitled design.png" alt="Bling & Mingle Logo" /> -->
     <h1>Charcuterie, Bling & Bubbly Social</h1>
-    <p><strong>Date:</strong> Saturday, December 6, 2025<br>
-       <strong>Time:</strong> 4:00 PM – 7:00 PM<br>
-       <strong>Location:</strong> Downtown Jacksonville area (location provided upon RSVP)</p>
+    <div class="subline">✨ 🥂 Sip. Sparkle. Savor. 💖</div>
+  </header>
 
-    <a href="https://softgirlsredefined.ticketspice.com/charcuterie-bling-bubbly" class="btn">Pay Now</a>
+  <main class="wrapper" role="main">
+    <div class="card" role="region" aria-labelledby="eventTitle">
+      <h2 id="eventTitle" style="margin:0 0 12px 0; text-align:center; font-family:'Playfair Display', serif; color:var(--deep)">You're invited ✨</h2>
 
-    <form action="https://formspree.io/f/xanpkjoy" method="POST">
-      <h2>RSVP Form</h2>
-      <label>Name:</label>
-      <input type="text" name="name" required>
-      <label>Email:</label>
-      <input type="email" name="email" required>
-      <label>Phone:</label>
-      <input type="text" name="phone">
-      <label>
-        <input type="checkbox" name="rsvp_later"> RSVP Now, Pay Later (2 weeks to pay)
-      </label>
-      <button type="submit" class="btn">Submit RSVP</button>
-    </form>
+      <div class="meta" aria-hidden="true">
+        <div class="chip">📅 December 6, 2025</div>
+        <div class="chip">⏰ 4:00 PM – 7:00 PM</div>
+        <div class="chip">📍 Downtown Jacksonville area</div>
+        <div class="chip">💵 $25 • 18+</div>
+      </div>
 
-    <form action="https://formspree.io/f/xanpkjoy" method="POST">
-      <h2>Feedback</h2>
-      <label>Your Experience:</label>
-      <textarea name="feedback" rows="4" placeholder="We’d love your thoughts!"></textarea>
-      <button type="submit" class="btn">Send Feedback</button>
-    </form>
+      <p class="lead">Join us for an elegant evening of charcuterie, bubbly, and bedazzling — craft your mini board, bedazzle a mini wine bottle, sip, and mingle. Exact address provided after RSVP.</p>
 
-    <footer>© 2025 Bling & Mingle Entertainment | Designed with 💖</footer>
+      <!-- Add to Calendar + Pay Now -->
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
+        <button class="btn" id="addCal">📅 Add to Calendar</button>
+
+        <a class="btn pay" id="ticketspiceBtn" href="https://softgirlsredefined.ticketspice.com/charcuterie-bling-bubbly" target="_blank" rel="noopener">
+          💳 Pay Now with TicketSpice
+        </a>
+      </div>
+
+      <!-- RSVP form (full) -->
+      <form id="rsvpForm" class="rsvp" action="https://formspree.io/f/xanpkjoy" method="POST" autocomplete="on" novalidate>
+        <label for="fullname">Full Name</label>
+        <input id="fullname" name="Full Name" type="text" required>
+
+        <label for="email">Email Address</label>
+        <input id="email" name="_replyto" type="email" required>
+
+        <label for="phone">Phone Number</label>
+        <input id="phone" name="Phone" type="tel" placeholder="Optional">
+
+        <label for="age">Are you 18 or older?</label>
+        <select id="age" name="Age Confirmation" required>
+          <option value="">Select one</option>
+          <option value="Yes">Yes</option>
+        </select>
+
+        <label for="bringing">Will you be bringing a guest?</label>
+        <select id="bringing" name="Bringing Guest" required>
+          <option value="">Select one</option>
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+
+        <label for="guestname" class="full">Guest's Full Name (if bringing)</label>
+        <input id="guestname" name="Guest Name" class="full" type="text" placeholder="Optional">
+
+        <label for="allergies" class="full">Food allergies or dietary preferences</label>
+        <textarea id="allergies" name="Allergies / Preferences" class="full" placeholder="Let us know if you have any dietary needs"></textarea>
+
+        <label for="paymentOpt">Payment Confirmation</label>
+        <select id="paymentOpt" name="Payment Option" required>
+          <option value="">Select one</option>
+          <option value="RSVP Now, Pay Later">RSVP Now, Pay Later (2 weeks to pay)</option>
+          <option value="Pay Now via TicketSpice">Pay Now via TicketSpice</option>
+        </select>
+
+        <label for="notes" class="full">Additional Notes or Requests</label>
+        <textarea id="notes" name="Notes" class="full" placeholder="Optional"></textarea>
+
+        <input type="hidden" name="event" value="Charcuterie, Bling & Bubbly - Dec 6 2025">
+        <input type="hidden" name="pageUrl" value="">
+
+        <div class="actions">
+          <button type="submit" class="btn">✨ Submit RSVP</button>
+          <button type="button" class="btn ghost" id="saveCopy">💾 Save a Copy</button>
+          <div class="note">You may RSVP now and pay later (within 2 weeks) or complete payment with TicketSpice.</div>
+        </div>
+
+        <div id="thank" style="display:none;grid-column:1/3;padding:12px;border-radius:10px;background:linear-gradient(90deg,#fff8f9,#f0fcff);text-align:center;font-weight:700;margin-top:6px;color:var(--deep);">💖 Thank you — we can’t wait to see you sparkle on December 6th! 💖</div>
+      </form>
+
+      <!-- Feedback (same endpoint) -->
+      <form id="feedbackForm" action="https://formspree.io/f/xanpkjoy" method="POST" class="full" style="margin-top:18px;">
+        <label for="fbname">Name</label>
+        <input id="fbname" name="Feedback Name" type="text" placeholder="Optional">
+
+        <label for="fbemail">Email</label>
+        <input id="fbemail" name="Feedback Email" type="email" placeholder="Optional">
+
+        <label for="fbmessage" class="full">Share your experience (or questions)</label>
+        <textarea id="fbmessage" name="Feedback Message" placeholder="We’d love to hear from you..."></textarea>
+
+        <div style="display:flex;gap:12px;align-items:center;justify-content:flex-start;margin-top:10px;">
+          <button type="submit" class="btn">✉️ Send Feedback</button>
+        </div>
+      </form>
+
+      <!-- Share bar (3D icons) -->
+      <div class="share" aria-label="Share this event">
+        <div class="icon" id="shareFb" title="Share to Facebook" role="button" tabindex="0" aria-pressed="false" aria-label="Share on Facebook">
+          <!-- SVG Facebook-like 3D icon -->
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%233b5998' d='M22 12a10 10 0 1 0-11.6 9.9v-7H8.9v-2.9h1.5V9.4c0-1.5.9-2.4 2.3-2.4.7 0 1.5.1 1.5.1v1.6h-.8c-.8 0-1 .5-1 1v1.3h1.7l-.3 2.9h-1.4v7A10 10 0 0 0 22 12z'/></svg>" alt="Facebook">
+        </div>
+
+        <div class="icon" id="shareIg" title="Share to Instagram" role="button" tabindex="0" aria-pressed="false" aria-label="Share on Instagram">
+          <!-- SVG Instagram-like 3D icon -->
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><radialGradient id='g' cx='50%' cy='50%'><stop offset='0' stop-color='%23fff'></stop></radialGradient><path fill='%23E1306C' d='M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5.5a4.5 4.5 0 1 0 .001 9.001A4.5 4.5 0 0 0 12 7.5zm5-1.6a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z'/></svg>" alt="Instagram">
+        </div>
+
+        <div class="icon" id="copyLink" title="Copy link" role="button" tabindex="0" aria-pressed="false" aria-label="Copy link">
+          <!-- link icon -->
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23333' d='M10.59 13.41a1 1 0 0 1 0-1.41l2.83-2.83a3 3 0 0 1 4.24 4.24l-1.41 1.41a1 1 0 0 1-1.41-1.41l1.41-1.41a1 1 0 0 0-1.41-1.41L10.59 13.41zM7.17 6.34A3 3 0 0 0 3 9.51l1.41 1.41a1 1 0 1 0 1.41-1.41L5.41 8.1a1 1 0 1 1 1.76-1.76l1.41 1.41a3 3 0 0 0 4.24 0l2.83-2.83a1 1 0 1 0-1.41-1.41L12.41 6.34a3 3 0 0 0-5.24 0z'/></svg>" alt="Copy">
+        </div>
+      </div>
+
+    </div>
   </main>
 
-  <button id="backToTop">↑</button>
+  <!-- back to top -->
+  <button id="backTop" aria-label="Back to top">↑</button>
 
-  <audio id="bg-music" src="sax_jazz_loop.mp3" autoplay loop controls style="position:fixed; bottom:10px; left:10px; z-index:999;"></audio>
+  <!-- audio (local file) -->
+  <audio id="bgAudio" src="sax_jazz_loop.mp3" loop preload="auto"></audio>
 
-  <script>
-    const loader = document.getElementById('loader');
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        loader.style.animation = 'fadeOut 1s forwards';
-      }, 2000);
-    });
+  <footer style="text-align:center;padding:26px 12px;color:var(--muted);z-index:2;">
+    Designed by Bling & Mingle Entertainment ✨ — Contact: Softgirlsredefined@gmail.com
+  </footer>
 
-    const btn = document.getElementById('backToTop');
-    window.addEventListener('scroll', () => {
-      btn.style.display = window.scrollY > 200 ? 'block' : 'none';
-    });
-    btn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
-  </script>
+<script>
+/* ---------- Loader & start music (autoplay attempt) ---------- */
+const loader = document.getElementById('loader');
+const audio = document.getElementById('bgAudio');
+
+window.addEventListener('load', async () => {
+  // try to play audio (may be blocked by some browsers until user interacts)
+  try {
+    await audio.play().catch(()=>{ /* autoplay blocked; will require interaction */ });
+  } catch(e){}
+  // fade out loader after ~2s
+  setTimeout(()=>{
+    loader.style.opacity = '0';
+    loader.style.visibility = 'hidden';
+  }, 1800);
+});
+
+/* If autoplay blocked, attempt play on first user interaction */
+const resumeAudio = () => { if (audio.paused) audio.play().catch(()=>{}); window.removeEventListener('pointerdown', resumeAudio); };
+window.addEventListener('pointerdown', resumeAudio);
+
+/* ---------- Formspree submit handling (RSVP) ---------- */
+const rsvp = document.getElementById('rsvpForm');
+const thank = document.getElementById('thank');
+rsvp.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  rsvp.querySelector('input[name="pageUrl"]').value = window.location.href;
+  const fd = new FormData(rsvp);
+  try {
+    const res = await fetch(rsvp.action, { method:'POST', body:fd, headers:{'Accept':'application/json'} });
+    if (res.ok) {
+      rsvp.reset();
+      rsvp.style.display = 'none';
+      thank.style.display = 'block';
+      // optional: scroll to thank you
+      thank.scrollIntoView({behavior:'smooth', block:'center'});
+    } else {
+      alert('Submission failed. Please try again or email Softgirlsredefined@gmail.com');
+    }
+  } catch(err){ alert('Network error. Please try again.'); }
+});
+
+/* ---------- Save a copy (download text) ---------- */
+document.getElementById('saveCopy').addEventListener('click', ()=>{
+  const fields = {
+    "Full Name": document.getElementById('fullname').value || '',
+    "Email": document.getElementById('email').value || '',
+    "Phone": document.getElementById('phone').value || '',
+    "Age": document.getElementById('age').value || '',
+    "Bringing Guest": document.getElementById('bringing').value || '',
+    "Guest Name": document.getElementById('guestname').value || '',
+    "Allergies": document.getElementById('allergies').value || '',
+    "Payment Option": document.getElementById('paymentOpt').value || '',
+    "Notes": document.getElementById('notes').value || ''
+  };
+  let text = 'Charcuterie, Bling & Bubbly — RSVP Copy\\n\\n';
+  for (let k in fields) text += `${k}: ${fields[k]}\\n`;
+  const blob = new Blob([text], {type:'text/plain'}); const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'RSVP_Charcuterie_Bling_Bubbly.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+
+/* ---------- Feedback form (same endpoint) ---------- */
+const feedback = document.getElementById('feedbackForm');
+feedback.addEventListener('submit', async (e) => {
+  // let Formspree handle; simple UX
+  // optionally show a tiny confirmation
+  // (no blocking — use default action)
+});
+
+/* ---------- Share buttons ---------- */
+const pageUrl = 'https://softgirlsredefined.com/charcuterie-bling-bubbly';
+document.getElementById('shareFb').addEventListener('click', ()=> {
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`, '_blank', 'noopener');
+});
+document.getElementById('shareIg').addEventListener('click', ()=> {
+  // Instagram doesn't have direct web share endpoint for links; open IG homepage with message prompt
+  // we'll open IG profile page (user can paste link) — include helpful prompt instead
+  window.open('https://www.instagram.com/', '_blank', 'noopener');
+});
+document.getElementById('copyLink').addEventListener('click', async ()=> {
+  try { await navigator.clipboard.writeText(pageUrl); alert('Link copied to clipboard!'); } catch(e) { prompt('Copy this link:', pageUrl); }
+});
+
+/* ---------- Back to top ---------- */
+const backTop = document.getElementById('backTop');
+window.addEventListener('scroll', ()=> {
+  backTop.style.display = window.scrollY > 200 ? 'block' : 'none';
+});
+backTop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}) );
+
+/* ---------- Add to calendar (Google + ICS) ---------- */
+document.getElementById('addCal').addEventListener('click', ()=>{
+  const start = '20251206T160000';
+  const end = '20251206T190000';
+  const title = 'Charcuterie, Bling & Bubbly Social';
+  const details = 'Sip, sparkle, and savor — bedazzle mini wine bottles and create mini charcuterie boards. Hosted by Bling & Mingle Entertainment.';
+  const location = 'Downtown Jacksonville - address shared upon RSVP';
+
+  // open Google Calendar
+  const g = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
+  window.open(g, '_blank', 'noopener');
+
+  // also offer ICS download
+  // create ICS data and prompt download
+  const ics = [
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Bling & Mingle//Charcuterie Bling Bubbly//EN',
+    'BEGIN:VEVENT',`DTSTART:${start}`,`DTEND:${end}`,`SUMMARY:${title}`,`DESCRIPTION:${details}`,`LOCATION:${location}`,'END:VEVENT','END:VCALENDAR'
+  ];
+  const blob = new Blob([ics.join('\\r\\n')], {type:'text/calendar'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'Charcuterie_Bling_Bubbly.ics'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+
+/* ---------- small keyboard accessibility: enter to click icon when focused ---------- */
+document.querySelectorAll('.icon').forEach(el=>{
+  el.addEventListener('keydown',(e)=>{ if(e.key==='Enter') el.click(); });
+});
+
+/* ---------- ensure focus outlines visible for keyboard users ---------- */
+document.addEventListener('keyup', (e)=> {
+  if (e.key === 'Tab') document.body.classList.add('show-focus');
+});
+</script>
 </body>
 </html>
